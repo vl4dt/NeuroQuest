@@ -9,15 +9,19 @@ import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import tun.learning.neuroquest.core.game.GameManager
 import tun.learning.neuroquest.core.interactor.SM2
 import tun.learning.neuroquest.core.model.Flashcard
 import tun.learning.neuroquest.core.model.MasteryPhase
+import tun.learning.neuroquest.core.model.PlayerStats
 import tun.learning.neuroquest.core.model.SM2Data
 
 @Composable
 fun App() {
     MaterialTheme {
         val sm2 = SM2()
+        val gameManager = GameManager()
+        var playerStats by remember { mutableStateOf(PlayerStats(xp = 0, level = 1)) }
         var flashcard by remember {
             mutableStateOf(
                 Flashcard(
@@ -44,6 +48,16 @@ fun App() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text("XP: ${playerStats.xp}")
+                Text("Level: ${playerStats.level}")
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
             Text(text = flashcard.question, style = MaterialTheme.typography.headlineMedium)
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -106,6 +120,7 @@ fun App() {
                     }
                     Button(onClick = {
                         flashcard = sm2.calculate(flashcard, 4)
+                        playerStats = gameManager.awardXp(playerStats, 10)
                         showAnswer = false
                         selectedOption = null
                     }) {
@@ -113,6 +128,7 @@ fun App() {
                     }
                     Button(onClick = {
                         flashcard = sm2.calculate(flashcard, 5)
+                        playerStats = gameManager.awardXp(playerStats, 10)
                         showAnswer = false
                         selectedOption = null
                     }) {
