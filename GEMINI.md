@@ -52,7 +52,7 @@
 - This app will be beautiful and have shared UIs for Android, iOS, desktop and web.
 
 ## Coding Style:
-- Use best practices for Kotlin code througout the codebase.
+- Use best practices for Kotlin code throughout the codebase.
 
 ## Regarding Dependencies:
 - Avoid introducing new external dependencies unless absolutely necessary.
